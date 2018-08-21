@@ -2,7 +2,7 @@ import glob
 import sys
 sys.path.append("gen-py")
 sys.path.insert(0, glob.glob('../thrift-0.11.0/lib/py/build/lib*')[0])
-from topgifs import topGifsService
+from topgifs import TopGifsService
 from src.DbInterface import DbInterface
 from thrift.transport import TSocket
 from thrift.transport import TTransport
@@ -16,7 +16,6 @@ class FetchGifHandler:
     def fetchGif(self, gif_id):
         dbi = DbInterface()
         print("[Server] Handling client request")
-        # return "The desired gif is: " + gif_id
         return dbi.getGifById("1")
 	
 if __name__ == '__main__':

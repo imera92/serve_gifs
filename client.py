@@ -2,7 +2,7 @@ import sys
 import glob
 sys.path.append('gen-py')
 sys.path.insert(0, glob.glob('../thrift-0.11.0/lib/py/build/lib*')[0])
-from topgifs import topGifsService
+from topgifs import TopGifsService
 from thrift import Thrift
 from thrift.transport import TSocket
 from thrift.transport import TTransport
@@ -19,7 +19,7 @@ def main():
     protocol = TBinaryProtocol.TBinaryProtocol(transport)
 
     # Create a client to use the protocol encoder
-    client = topGifsService.Client(protocol)
+    client = TopGifsService.Client(protocol)
 
     # Connect!
     transport.open()
