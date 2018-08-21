@@ -17,7 +17,7 @@ class DbInterface:
 		try:
 			self.openConnection()
 			with self.connection.cursor() as cursor:
-				sql = "SELECT * FROM `gifs_gif_old` WHERE `id`=%s"
+				sql = "SELECT * FROM `gifs_gif` WHERE `id`=%s"
 				cursor.execute(sql, (gif_id))
 				self.result = cursor.fetchone()
 		finally:
