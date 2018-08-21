@@ -1,10 +1,10 @@
 struct Gif {
-  1: string gif_id,
+  1: i32 gif_id,
   2: string url,
   3: string description,
   4: i32 count
 }
 
 service TopGifsService {
-	Gif fetchGif(1:string gif_id)
+	set<string> fetchGif(1:string gif_id)
 }
