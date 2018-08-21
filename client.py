@@ -25,9 +25,11 @@ def main():
     transport.open()
 
     result = client.fetchGif("1")
-    print("The gif I wanted: " + result)
+    print(result)
+
 if __name__ == '__main__':
     try:
         main()
     except Thrift.TException as tx:
+        print("There was an error")
         print('%s' % tx.message)

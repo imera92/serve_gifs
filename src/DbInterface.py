@@ -10,12 +10,7 @@ class DbInterface:
 
 	def openConnection(self):
 		# Connect to the database
-		self.connection = pymysql.connect(self.host,
-                             user='root',
-                             password='root',
-                             db='PROYECTO',
-                             charset='utf8mb4',
-                             cursorclass=pymysql.cursors.DictCursor)
+		self.connection = pymysql.connect(self.host,user='root',password='root',db='PROYECTO',charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
 
 	def getGifById(self, gif_id):
 		self.openConnection()		

@@ -14,10 +14,10 @@ class FetchGifHandler:
         self.log = {}
 
     def fetchGif(self, gif_id):
-	dbi = DbInterface()
+        dbi = DbInterface()
         print("[Server] Handling client request")
         # return "The desired gif is: " + gif_id
-	return dbi.getGifById("1")
+        return dbi.getGifById("1")
 	
 if __name__ == '__main__':
     handler = FetchGifHandler()
