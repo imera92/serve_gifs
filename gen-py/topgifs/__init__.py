@@ -1,1 +1,1 @@
-__all__ = ['ttypes', 'constants', 'topGifsService']
+__all__ = ['ttypes', 'constants', 'TopGifsService']

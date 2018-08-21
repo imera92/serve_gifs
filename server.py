@@ -16,11 +16,12 @@ class FetchGifHandler:
     def fetchGif(self, gif_id):
         dbi = DbInterface()
         print("[Server] Handling client request")
-        return dbi.getGifById("1")
+        #return dbi.getGifById("1")
+	return "This is a string"
 	
 if __name__ == '__main__':
     handler = FetchGifHandler()
-    proc = topGifsService.Processor(handler)
+    proc = TopGifsService.Processor(handler)
     trans_svr = TSocket.TServerSocket(port=9090)
     trans_fac = TTransport.TBufferedTransportFactory()
     proto_fac = TBinaryProtocol.TBinaryProtocolFactory()

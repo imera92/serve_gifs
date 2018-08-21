@@ -16,7 +16,7 @@ else:
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.protocol.TBinaryProtocol import TBinaryProtocol
 
-from topgifs import topGifsService
+from topgifs import TopGifsService
 from topgifs.ttypes import *
 
 if len(sys.argv) <= 1 or sys.argv[1] == '--help':
@@ -101,7 +101,7 @@ else:
     else:
         transport = TTransport.TBufferedTransport(socket)
 protocol = TBinaryProtocol(transport)
-client = topGifsService.Client(protocol)
+client = TopGifsService.Client(protocol)
 transport.open()
 
 if cmd == 'fetchGif':
