@@ -20,15 +20,13 @@ class FetchGifHandler:
         print("[Server] Consulted Gif ID: " + gif_id)
         dbi.getGifById("1")
         print("[Server] Creating Gif instance")
-        gif = Gif(dbi.result)
         print("[Server] Answering request")
-        # return gif
-	my_list = []
-	my_list.append(str(gif.gif_id))
-	my_list.append(gif.url)
-	my_list.append(gif.description)
-	my_list.append(str(gif.count))
-	return my_list
+    	gif_set = []
+    	gif_set.append(str(gif.gif_id))
+    	gif_set.append(gif.url)
+    	gif_set.append(gif.description)
+    	gif_set.append(str(gif.count))
+    	return gif_set
 	
 if __name__ == '__main__':
     handler = FetchGifHandler()

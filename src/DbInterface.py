@@ -1,4 +1,5 @@
 import pymysql.cursors
+from Gif import Gif
 
 class DbInterface:
 	host="localhost"
@@ -19,7 +20,9 @@ class DbInterface:
 			with self.connection.cursor() as cursor:
 				sql = "SELECT * FROM `gifs_gif` WHERE `id`=%s"
 				cursor.execute(sql, (gif_id))
-				self.result = cursor.fetchone()
+				row = cursor.fetchone()
+        		gif = Gif(row)
+				self.result = gif
 		finally:
 			self.connection.close()
 			return self.result
