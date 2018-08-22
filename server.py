@@ -21,6 +21,7 @@ class FetchGifHandler:
         dbi.getGifById(gif_id)
         print("[Server] Creating Gif instance")
         print("[Server] Answering request")
+        gif = dbi.result
     	gif_set = []
     	gif_set.append(str(gif.gif_id))
     	gif_set.append(gif.url)
