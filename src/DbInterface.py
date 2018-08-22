@@ -21,8 +21,28 @@ class DbInterface:
 				sql = "SELECT * FROM `gifs_gif` WHERE `id`=%s"
 				cursor.execute(sql, (gif_id))
 				row = cursor.fetchone()
-        		gif = Gif(row)
+				gif = Gif(row)
 				self.result = gif
+		finally:
+			self.connection.close()
+			return self.result
+
+	def getAllGifs(self):
+		try:
+			self.openConnection()
+			with self.connection.cursor() as cursor:
+				sql = "SELECT * FROM `gifs_gif`"
+				cursor.execute(sql)
+				rows = cursor.fetchall()
+				result_set = []
+				for row in rows:
+					gif = []
+					gif.append(str(row["id"]))
+					gif.append(row["url"])
+					gif.append(row["descripcion"])
+					gif.append(str(row["contador"]))
+					result_set.append(gif)
+				self.result = result_set
 		finally:
 			self.connection.close()
 			return self.result
