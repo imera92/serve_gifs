@@ -28,6 +28,13 @@ class FetchGifHandler:
     	gif_set.append(gif.description)
     	gif_set.append(str(gif.count))
     	return gif_set
+
+    def fetchAllGifs(self):
+        dbi = DbInterface()
+        print("[Server] Handling client request")
+        print("[Server] Creating Gif set")
+        result_set = dbi.getAllGifs()
+        return result_set
 	
 if __name__ == '__main__':
     handler = FetchGifHandler()
