@@ -14,21 +14,6 @@ class FetchGifHandler:
     def __init__(self):
         self.log = {}
 
-    def fetchGif(self, gif_id):
-        dbi = DbInterface()
-        print("[Server] Handling client request")
-        print("[Server] Consulted Gif ID: " + gif_id)
-        dbi.getGifById(gif_id)
-        print("[Server] Creating Gif instance")
-        print("[Server] Answering request")
-        gif = dbi.result
-    	gif_set = []
-    	gif_set.append(str(gif.gif_id))
-    	gif_set.append(gif.url)
-    	gif_set.append(gif.description)
-    	gif_set.append(str(gif.count))
-    	return gif_set
-
     def fetchAllGifs(self):
         dbi = DbInterface()
         print("[Server] Handling client request")

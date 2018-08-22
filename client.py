@@ -25,7 +25,7 @@ def main():
     # Connect!
     transport.open()
 
-    result = client.fetchGif("1")
+    result = client.fetchAllGifs()
     print(result)
 
 if __name__ == '__main__':
