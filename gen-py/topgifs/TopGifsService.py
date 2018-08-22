@@ -194,9 +194,13 @@ class fetchGif_result(object):
             if ftype == TType.STOP:
                 break
             if fid == 0:
-                if ftype == TType.STRUCT:
-                    self.success = Gif()
-                    self.success.read(iprot)
+                if ftype == TType.SET:
+                    self.success = set()
+                    (_etype3, _size0) = iprot.readSetBegin()
+                    for _i4 in range(_size0):
+                        _elem5 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        self.success.add(_elem5)
+                    iprot.readSetEnd()
                 else:
                     iprot.skip(ftype)
             else:
@@ -210,8 +214,11 @@ class fetchGif_result(object):
             return
         oprot.writeStructBegin('fetchGif_result')
         if self.success is not None:
-            oprot.writeFieldBegin('success', TType.STRUCT, 0)
-            self.success.write(oprot)
+            oprot.writeFieldBegin('success', TType.SET, 0)
+            oprot.writeSetBegin(TType.STRING, len(self.success))
+            for iter6 in self.success:
+                oprot.writeString(iter6.encode('utf-8') if sys.version_info[0] == 2 else iter6)
+            oprot.writeSetEnd()
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -231,7 +238,7 @@ class fetchGif_result(object):
         return not (self == other)
 all_structs.append(fetchGif_result)
 fetchGif_result.thrift_spec = (
-    (0, TType.STRUCT, 'success', [Gif, None], None, ),  # 0
+    (0, TType.SET, 'success', (TType.STRING, 'UTF8', False), None, ),  # 0
 )
 fix_spec(all_structs)
 del all_structs
