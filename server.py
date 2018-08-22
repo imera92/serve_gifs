@@ -18,7 +18,7 @@ class FetchGifHandler:
         dbi = DbInterface()
         print("[Server] Handling client request")
         print("[Server] Consulted Gif ID: " + gif_id)
-        dbi.getGifById("1")
+        dbi.getGifById(gif_id)
         print("[Server] Creating Gif instance")
         print("[Server] Answering request")
     	gif_set = []
