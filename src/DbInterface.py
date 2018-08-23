@@ -1,5 +1,10 @@
 import pymysql.cursors
-from Gif import Gif
+import sys
+import redis
+import time
+import pickle as cPickle
+import hashlib
+from datetime import datetime
 
 class DbInterface:
 	host="localhost"
@@ -32,3 +37,20 @@ class DbInterface:
 		finally:
 			self.connection.close()
 			return self.result
+
+	def getRedisGifs(self):
+		R_SERVER  = redis.StrictRedis(host = "localhost", port =6379, db = 0 )
+		hash = hashlib.sha224(("SELECT url, descripcion, contador FROM `gifs_gif` ORDER BY contador LIMIT 10").encode('utf-8')).hexdigest()
+		key = "sql_cache:"+hash
+		print ("New  key ", key)
+		
+		if(R_SERVER.get(key)):
+			print("This was returned from redis")
+			return R_SERVER.get(key)
+		else:
+			data = self.getAllGifs()
+			R_SERVER.set(key, cPickle.dumps(data))
+			R_SERVER.expire(key, 12)
+			print ("Send data to redis and return the data")
+			return R_SERVER.get(key)
+

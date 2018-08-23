@@ -24,8 +24,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('Usage: ' + sys.argv[0] + ' [-h host[:port]] [-u url] [-f[ramed]] [-s[sl]] [-novalidate] [-ca_certs certs] [-keyfile keyfile] [-certfile certfile] function [arg1 [arg2...]]')
     print('')
     print('Functions:')
-    print('   fetchGif(string gif_id)')
-    print('   fetchAllGifs()')
+    print('   fetchRedisGifs()')
     print('')
     sys.exit(0)
 
@@ -105,17 +104,11 @@ protocol = TBinaryProtocol(transport)
 client = TopGifsService.Client(protocol)
 transport.open()
 
-if cmd == 'fetchGif':
-    if len(args) != 1:
-        print('fetchGif requires 1 args')
-        sys.exit(1)
-    pp.pprint(client.fetchGif(args[0],))
-
-elif cmd == 'fetchAllGifs':
+if cmd == 'fetchRedisGifs':
     if len(args) != 0:
-        print('fetchAllGifs requires 0 args')
+        print('fetchRedisGifs requires 0 args')
         sys.exit(1)
-    pp.pprint(client.fetchAllGifs())
+    pp.pprint(client.fetchRedisGifs())
 
 else:
     print('Unrecognized method %s' % cmd)

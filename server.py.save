@@ -1,4 +1,3 @@
-import logging
 import glob
 import sys
 sys.path.append("gen-py")
@@ -10,21 +9,19 @@ from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
 from thrift.server import TServer
-import pickle as cPickle
 
 class FetchGifHandler:
     def __init__(self):
-        self.log = {}
+        self.lo
 
-    def fetchRedisGifs(self):
+    def fetchAllGifs(self):
         dbi = DbInterface()
         print("[Server] Handling client request")
         print("[Server] Creating Gif set")
-        result_set = dbi.getRedisGifs()
+        result_set = dbi.getAllGifs()
         return result_set
-
+	
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
     handler = FetchGifHandler()
     proc = TopGifsService.Processor(handler)
     trans_svr = TSocket.TServerSocket(port=9090)

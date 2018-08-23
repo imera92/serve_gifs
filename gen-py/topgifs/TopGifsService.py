@@ -19,14 +19,7 @@ all_structs = []
 
 
 class Iface(object):
-    def fetchGif(self, gif_id):
-        """
-        Parameters:
-         - gif_id
-        """
-        pass
-
-    def fetchAllGifs(self):
+    def fetchRedisGifs(self):
         pass
 
 
@@ -37,23 +30,18 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def fetchGif(self, gif_id):
-        """
-        Parameters:
-         - gif_id
-        """
-        self.send_fetchGif(gif_id)
-        return self.recv_fetchGif()
+    def fetchRedisGifs(self):
+        self.send_fetchRedisGifs()
+        return self.recv_fetchRedisGifs()
 
-    def send_fetchGif(self, gif_id):
-        self._oprot.writeMessageBegin('fetchGif', TMessageType.CALL, self._seqid)
-        args = fetchGif_args()
-        args.gif_id = gif_id
+    def send_fetchRedisGifs(self):
+        self._oprot.writeMessageBegin('fetchRedisGifs', TMessageType.CALL, self._seqid)
+        args = fetchRedisGifs_args()
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_fetchGif(self):
+    def recv_fetchRedisGifs(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -61,46 +49,19 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = fetchGif_result()
+        result = fetchRedisGifs_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "fetchGif failed: unknown result")
-
-    def fetchAllGifs(self):
-        self.send_fetchAllGifs()
-        return self.recv_fetchAllGifs()
-
-    def send_fetchAllGifs(self):
-        self._oprot.writeMessageBegin('fetchAllGifs', TMessageType.CALL, self._seqid)
-        args = fetchAllGifs_args()
-        args.write(self._oprot)
-        self._oprot.writeMessageEnd()
-        self._oprot.trans.flush()
-
-    def recv_fetchAllGifs(self):
-        iprot = self._iprot
-        (fname, mtype, rseqid) = iprot.readMessageBegin()
-        if mtype == TMessageType.EXCEPTION:
-            x = TApplicationException()
-            x.read(iprot)
-            iprot.readMessageEnd()
-            raise x
-        result = fetchAllGifs_result()
-        result.read(iprot)
-        iprot.readMessageEnd()
-        if result.success is not None:
-            return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "fetchAllGifs failed: unknown result")
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "fetchRedisGifs failed: unknown result")
 
 
 class Processor(Iface, TProcessor):
     def __init__(self, handler):
         self._handler = handler
         self._processMap = {}
-        self._processMap["fetchGif"] = Processor.process_fetchGif
-        self._processMap["fetchAllGifs"] = Processor.process_fetchAllGifs
+        self._processMap["fetchRedisGifs"] = Processor.process_fetchRedisGifs
 
     def process(self, iprot, oprot):
         (name, type, seqid) = iprot.readMessageBegin()
@@ -117,13 +78,13 @@ class Processor(Iface, TProcessor):
             self._processMap[name](self, seqid, iprot, oprot)
         return True
 
-    def process_fetchGif(self, seqid, iprot, oprot):
-        args = fetchGif_args()
+    def process_fetchRedisGifs(self, seqid, iprot, oprot):
+        args = fetchRedisGifs_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = fetchGif_result()
+        result = fetchRedisGifs_result()
         try:
-            result.success = self._handler.fetchGif(args.gif_id)
+            result.success = self._handler.fetchRedisGifs()
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -135,30 +96,7 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("fetchGif", msg_type, seqid)
-        result.write(oprot)
-        oprot.writeMessageEnd()
-        oprot.trans.flush()
-
-    def process_fetchAllGifs(self, seqid, iprot, oprot):
-        args = fetchAllGifs_args()
-        args.read(iprot)
-        iprot.readMessageEnd()
-        result = fetchAllGifs_result()
-        try:
-            result.success = self._handler.fetchAllGifs()
-            msg_type = TMessageType.REPLY
-        except TTransport.TTransportException:
-            raise
-        except TApplicationException as ex:
-            logging.exception('TApplication exception in handler')
-            msg_type = TMessageType.EXCEPTION
-            result = ex
-        except Exception:
-            logging.exception('Unexpected exception in handler')
-            msg_type = TMessageType.EXCEPTION
-            result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("fetchAllGifs", msg_type, seqid)
+        oprot.writeMessageBegin("fetchRedisGifs", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -166,15 +104,8 @@ class Processor(Iface, TProcessor):
 # HELPER FUNCTIONS AND STRUCTURES
 
 
-class fetchGif_args(object):
-    """
-    Attributes:
-     - gif_id
-    """
+class fetchRedisGifs_args(object):
 
-
-    def __init__(self, gif_id=None,):
-        self.gif_id = gif_id
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -185,11 +116,6 @@ class fetchGif_args(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 1:
-                if ftype == TType.STRING:
-                    self.gif_id = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -199,11 +125,7 @@ class fetchGif_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('fetchGif_args')
-        if self.gif_id is not None:
-            oprot.writeFieldBegin('gif_id', TType.STRING, 1)
-            oprot.writeString(self.gif_id.encode('utf-8') if sys.version_info[0] == 2 else self.gif_id)
-            oprot.writeFieldEnd()
+        oprot.writeStructBegin('fetchRedisGifs_args')
         oprot.writeFieldStop()
         oprot.writeStructEnd()
 
@@ -220,14 +142,12 @@ class fetchGif_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(fetchGif_args)
-fetchGif_args.thrift_spec = (
-    None,  # 0
-    (1, TType.STRING, 'gif_id', 'UTF8', None, ),  # 1
+all_structs.append(fetchRedisGifs_args)
+fetchRedisGifs_args.thrift_spec = (
 )
 
 
-class fetchGif_result(object):
+class fetchRedisGifs_result(object):
     """
     Attributes:
      - success
@@ -265,7 +185,7 @@ class fetchGif_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('fetchGif_result')
+        oprot.writeStructBegin('fetchRedisGifs_result')
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.SET, 0)
             oprot.writeSetBegin(TType.STRING, len(self.success))
@@ -289,128 +209,9 @@ class fetchGif_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(fetchGif_result)
-fetchGif_result.thrift_spec = (
+all_structs.append(fetchRedisGifs_result)
+fetchRedisGifs_result.thrift_spec = (
     (0, TType.SET, 'success', (TType.STRING, 'UTF8', False), None, ),  # 0
-)
-
-
-class fetchAllGifs_args(object):
-
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('fetchAllGifs_args')
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-all_structs.append(fetchAllGifs_args)
-fetchAllGifs_args.thrift_spec = (
-)
-
-
-class fetchAllGifs_result(object):
-    """
-    Attributes:
-     - success
-    """
-
-
-    def __init__(self, success=None,):
-        self.success = success
-
-    def read(self, iprot):
-        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
-            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
-            return
-        iprot.readStructBegin()
-        while True:
-            (fname, ftype, fid) = iprot.readFieldBegin()
-            if ftype == TType.STOP:
-                break
-            if fid == 0:
-                if ftype == TType.SET:
-                    self.success = set()
-                    (_etype10, _size7) = iprot.readSetBegin()
-                    for _i11 in range(_size7):
-                        _elem12 = set()
-                        (_etype16, _size13) = iprot.readSetBegin()
-                        for _i17 in range(_size13):
-                            _elem18 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                            _elem12.add(_elem18)
-                        iprot.readSetEnd()
-                        self.success.add(_elem12)
-                    iprot.readSetEnd()
-                else:
-                    iprot.skip(ftype)
-            else:
-                iprot.skip(ftype)
-            iprot.readFieldEnd()
-        iprot.readStructEnd()
-
-    def write(self, oprot):
-        if oprot._fast_encode is not None and self.thrift_spec is not None:
-            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
-            return
-        oprot.writeStructBegin('fetchAllGifs_result')
-        if self.success is not None:
-            oprot.writeFieldBegin('success', TType.SET, 0)
-            oprot.writeSetBegin(TType.SET, len(self.success))
-            for iter19 in self.success:
-                oprot.writeSetBegin(TType.STRING, len(iter19))
-                for iter20 in iter19:
-                    oprot.writeString(iter20.encode('utf-8') if sys.version_info[0] == 2 else iter20)
-                oprot.writeSetEnd()
-            oprot.writeSetEnd()
-            oprot.writeFieldEnd()
-        oprot.writeFieldStop()
-        oprot.writeStructEnd()
-
-    def validate(self):
-        return
-
-    def __repr__(self):
-        L = ['%s=%r' % (key, value)
-             for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-    def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-    def __ne__(self, other):
-        return not (self == other)
-all_structs.append(fetchAllGifs_result)
-fetchAllGifs_result.thrift_spec = (
-    (0, TType.SET, 'success', (TType.SET, (TType.STRING, 'UTF8', False), False), None, ),  # 0
 )
 fix_spec(all_structs)
 del all_structs
