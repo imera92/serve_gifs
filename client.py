@@ -8,6 +8,7 @@ from thrift import Thrift
 from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
+import pickle as cPickle
 
 def main():
     # Make socket
@@ -25,8 +26,9 @@ def main():
     # Connect!
     transport.open()
 
-    result = client.fetchAllGifs()
-    print(result)
+    result = client.fetchRedisGifs()
+    print("Received")
+#    print(cPickle.loads(result))
 
 if __name__ == '__main__':
     try:
