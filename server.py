@@ -20,7 +20,7 @@ class FetchGifHandler:
         dbi = DbInterface()
         print("[Server] Handling client request")
         print("[Server] Creating Gif set")
-        result_set = dbi.getRedisGifs()
+        result_set = dbi.getRedisGifs().decode('utf-8', 'ignore')
         return result_set
 
 if __name__ == '__main__':

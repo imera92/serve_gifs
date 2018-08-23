@@ -28,7 +28,7 @@ def main():
 
     result = client.fetchRedisGifs()
     print("Received")
-#    print(cPickle.loads(result))
+    print(cPickle.loads(result))
 
 if __name__ == '__main__':
     try:

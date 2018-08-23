@@ -167,13 +167,8 @@ class fetchRedisGifs_result(object):
             if ftype == TType.STOP:
                 break
             if fid == 0:
-                if ftype == TType.SET:
-                    self.success = set()
-                    (_etype3, _size0) = iprot.readSetBegin()
-                    for _i4 in range(_size0):
-                        _elem5 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        self.success.add(_elem5)
-                    iprot.readSetEnd()
+                if ftype == TType.STRING:
+                    self.success = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
                 else:
                     iprot.skip(ftype)
             else:
@@ -187,11 +182,8 @@ class fetchRedisGifs_result(object):
             return
         oprot.writeStructBegin('fetchRedisGifs_result')
         if self.success is not None:
-            oprot.writeFieldBegin('success', TType.SET, 0)
-            oprot.writeSetBegin(TType.STRING, len(self.success))
-            for iter6 in self.success:
-                oprot.writeString(iter6.encode('utf-8') if sys.version_info[0] == 2 else iter6)
-            oprot.writeSetEnd()
+            oprot.writeFieldBegin('success', TType.STRING, 0)
+            oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -211,7 +203,7 @@ class fetchRedisGifs_result(object):
         return not (self == other)
 all_structs.append(fetchRedisGifs_result)
 fetchRedisGifs_result.thrift_spec = (
-    (0, TType.SET, 'success', (TType.STRING, 'UTF8', False), None, ),  # 0
+    (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
 )
 fix_spec(all_structs)
 del all_structs
